@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 const nodemailer = require('nodemailer')
 const { JWT_SECRET } = require('../../Keys')
 const Client = require("../../models/user/client")
-
+const bcrypt = require('bcrypt')
 
 var transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -49,8 +49,8 @@ router.post('/login', (req, res) => {
 })
 
 router.post('/signup', (req, res) => {
-    const { nom, email, password, tel, date } = req.body
-    if (!email || !password || !tel || !nom || !date) {
+    const { name, email, password, tel, date } = req.body
+    if (!email || !password || !tel || !name || !date) {
         return res.status(422).send({ error: "Veuillez remplir tout les champs" })
     }
     Client.findOne({ email: email }).then(savedUser => {
@@ -59,7 +59,7 @@ router.post('/signup', (req, res) => {
         }
         bcrypt.hash(password, 15).then(hashedpassword => {
             const newUser = new Client({
-                nom: nom,
+                name: name,
                 email: email,
                 password: hashedpassword,
                 date: date,
@@ -71,13 +71,12 @@ router.post('/signup', (req, res) => {
                 console.log(err)
             })
 
-        }).catch(err => {
-            console.log(err)
+        }).catch(err2 => {
+            console.log(err2)
         })
 
-
-    }).catch(err => {
-        console.log(err)
+    }).catch(err3 => {
+        console.log(err3)
     })
 
 
@@ -135,7 +134,7 @@ router.post('/new-password', (req, res) => {
     Client.findOne({ resetToken: sentToken, expireToken: { $gt: Date.now() } })
         .then(user => {
 
-            if (!ser) {
+            if (!user) {
                 return res.status(422).json({ error: "Réessayer session expirée" })
             }
 
