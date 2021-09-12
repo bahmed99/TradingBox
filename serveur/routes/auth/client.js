@@ -1,160 +1,178 @@
-const express = require('express')
-const router = express.Router()
-const crypto = require('crypto')
-const jwt = require('jsonwebtoken')
-const nodemailer = require('nodemailer')
-const { JWT_SECRET } = require('../../Keys')
-const Client = require("../../models/user/client")
-const bcrypt = require('bcrypt')
+const express = require("express");
+const router = express.Router();
+const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
+const { JWT_SECRET } = require("../../Keys");
+const Client = require("../../models/user/client");
+const bcrypt = require("bcrypt");
 
 var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: "iDriveGears@gmail.com",
-        pass: "aok2020."
-    }
-})
+  service: "gmail",
+  host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, 
+  auth: {
+    user: "iDriveGears@gmail.com",
+    pass: "aok2020.",
+  },
+});
 
+router.post("/login", (req, res) => {
+  const { email, password } = req.body;
 
-
-router.post('/login', (req, res) => {
-    const { email, password } = req.body
-    if (!email || !password) {
-        return res.status(422).send({ error: "Veuillez remplir tout les champs" })
-    }
-    Client.findOne({ email: email }).then(savedUser => {
-        if (!savedUser) {
-            return res.status(422).send({ error: "Veuillez vérifier votre email" })
-        }
-        bcrypt.compare(password, savedUser.password).then(doMatch => {
-            if (doMatch) {
-                const token = jwt.sign({ _id: savedUser._id }, JWT_SECRET)
-                res.status(200).send({ token: token })
-            }
-            else {
-
-                return res.status(422).send({ error: "Veuillez vérifier votre mot de passe" })
-
-
-            }
-        }).catch(err => {
-            res.status(400).json({ erreur: err })
+  if (!email || !password) {
+    return res.status(422).send({ error: "Veuillez remplir tout les champs" });
+  }
+  Client.findOne({ email: email })
+    .then((savedUser) => {
+      if (!savedUser) {
+        return res.status(422).send({ error: "Veuillez vérifier votre email" });
+      }
+      bcrypt
+        .compare(password, savedUser.password)
+        .then((doMatch) => {
+          if (doMatch) {
+            const token = jwt.sign({ _id: savedUser._id }, JWT_SECRET);
+            res.status(200).send({ token: token })
+          } else {
+            return res
+              .status(422)
+              .send({ error: "Veuillez vérifier votre mot de passe" });
+          }
         })
-
-    }).catch(erreur => {
-        res.status(400).json({ erreur: erreur })
+        .catch((err) => {
+          res.status(400).json({ erreur: err });
+        });
     })
+    .catch((erreur) => {
+      res.status(400).json({ erreur: erreur });
+    });
+});
 
-
-})
-
-router.post('/signup', (req, res) => {
-    const { name, email, password, tel, date } = req.body
-    if (!email || !password || !tel || !name || !date) {
-        return res.status(422).send({ error: "Veuillez remplir tout les champs" })
-    }
-    Client.findOne({ email: email }).then(savedUser => {
-        if (savedUser) {
-            return res.status(422).send({ error: 'Utilisateur existe déja' })
-        }
-        bcrypt.hash(password, 15).then(hashedpassword => {
+router.post("/signup", (req, res) => {
+  const { email, password, portfolio_size, strategy_suggestion,api,secret_key } = req.body;
+  if (!email || !password || !portfolio_size || !strategy_suggestion || !api ||!secret_key) {
+    return res.status(422).send({ error: "Veuillez remplir tout les champs" });
+  }
+  Client.findOne({ email: email })
+    .then((savedUser) => {
+      if (savedUser) {
+        return res.status(422).send({ error: "Utilisateur existe déja" });
+      }
+      bcrypt
+        .hash(password, 15)
+        .then((hashedpassword) => {
+          bcrypt.hash(api,15).then(hashedApi=>{
             const newUser = new Client({
-                name: name,
-                email: email,
-                password: hashedpassword,
-                date: date,
-                tel: tel
-            })
-            newUser.save().then(result => {
-                res.json({ message: "le compte est bien créé" })
-            }).catch(err => {
-                console.log(err)
-            })
-
-        }).catch(err2 => {
-            console.log(err2)
+              email: email,
+              password: hashedpassword,
+              portfolio_size: portfolio_size,
+              strategy_suggestion: strategy_suggestion,
+              api:hashedApi,
+              secret_key:secret_key
+            });
+            newUser
+              .save()
+              .then((result) => {
+                res.json({ message: "le compte est bien créé" });
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }).catch(apiErreur=>{
+            res.send(apiErreur)
+          })
+         
         })
-
-    }).catch(err3 => {
-        console.log(err3)
+        .catch((err2) => {
+          console.log(err2);
+        });
     })
+    .catch((err3) => {
+      console.log(err3);
+    });
+});
 
-
-
-})
-
-router.post('/forgot-password', (req, res) => {
-    crypto.randomBytes(32, (err, buffer) => {
-        if (err) {
-            console.log(err)
-        }
-        const token = buffer.toString("hex")
-        Client.findOne({ email: req.body.email })
-            .then(user => {
-                if (!user) {
-                    return res.status(422).json({ error: "Aucun utilisateur avec ce email" })
-                }
-
-                else {
-                    user.resetToken = token
-                    user.expireToken = Date.now() + 3600000
-                    user.save().then(result => {
-                        let mailoptions = {
-                            from: "iDriveGears@gmail.com",
-                            to: user.email,
-                            subject: "Reset mot de passe",
-                            html: `
+router.post("/forgot-password", (req, res) => {
+  crypto.randomBytes(32, (err, buffer) => {
+    if (err) {
+      console.log(err);
+    }
+    const token = buffer.toString("hex");
+    Client.findOne({ email: req.body.email }).then((user) => {
+      if (!user) {
+        return res
+          .status(422)
+          .json({ error: "Aucun utilisateur avec ce email" });
+      } else {
+        user.resetToken = token;
+        user.expireToken = Date.now() + 3600000;
+        user.save().then((result) => {
+          let mailoptions = {
+            from: "iDriveGears@gmail.com",
+            to: user.email,
+            subject: "Reset mot de passe",
+            html: `
                         <p>you requested for password reset</p>
-                        <h5> click on this <a href="http://localhost:3000/reset/${token}"> Link </a> to reset your password</h5>
-                        `
-                        }
-                        transporter.sendMail(mailoptions, function (error, info) {
-                            if (error) {
-                                console.log(error);
-                            }
-                            else {
-                                console.log('Email sent: ' + info.response);
+                        <h5> Alternatively, you can enter the following password reset code: ${token} </h5>
+                        `,
+          };
+          transporter.sendMail(mailoptions, function (error, info) {
+            if (error) {
+              console.log(error);
+            } else {
+              console.log("Email sent: " + info.response);
+            }
+          });
+          res.json({ message: "check your mail" });
+        });
+      }
+    });
+  });
+});
 
-                            }
-                        });
-                        res.json({ message: "check your mail" })
-
-                    })
-                }
-            })
+router.post("/new-password", (req, res) => {
+  const newPassword = req.body.password;
+  const sentToken = req.body.token;
+  Client.findOne({ resetToken: sentToken, expireToken: { $gt: Date.now() } })
+    .then((user) => {
+      if (!user) {
+        return res.status(422).json({ error: "Réessayer session expirée" });
+      } else {
+        bcrypt
+          .hash(newPassword, 15)
+          .then((hashedpassword) => {
+            user.password = hashedpassword;
+            user.resetToken = undefined;
+            user.expireToken = undefined;
+            user.save().then((saveduser) => {
+              res.json({
+                message: "La mise a jour de votre mot de passe est bien faite",
+              });
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     })
+    .catch((err) => {
+      console.log(err);
+    });
+});
 
+
+router.post("/check_mail",(req,res)=>{
+  Client.findOne({email:req.body.email}).then(savedUser=>{
+    if (!savedUser) {
+      return res.send({ error: false });
+    }
+    else {
+      return res.send({ error: true });
+    }
+
+  })
 })
 
-
-
-router.post('/new-password', (req, res) => {
-    const newPassword = req.body.password
-    const sentToken = req.body.token
-    Client.findOne({ resetToken: sentToken, expireToken: { $gt: Date.now() } })
-        .then(user => {
-
-            if (!user) {
-                return res.status(422).json({ error: "Réessayer session expirée" })
-            }
-
-            else {
-                bcrypt.hash(newPassword, 15).then(hashedpassword => {
-                    user.password = hashedpassword
-                    user.resetToken = undefined
-                    user.expireToken = undefined
-                    user.save().then(saveduser => {
-                        res.json({ message: "La mise a jour de votre mot de passe est bien faite" })
-                    })
-                }).catch(err => {
-                    console.log(err)
-                })
-            }
-        }).catch(err => {
-            console.log(err)
-        })
-
-})
-
-
-module.exports = router
+module.exports = router;

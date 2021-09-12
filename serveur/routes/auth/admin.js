@@ -17,6 +17,7 @@ var transporter = nodemailer.createTransport({
 
 router.post('/login', (req, res) => {
     const { email, password } = req.body
+  
     if (!email || !password) {
        return res.status(422).send({ error: "Veuillez remplir tout les champs" })
     }
