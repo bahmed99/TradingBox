@@ -1,0 +1,263 @@
+
+
+.navbar {
+  height: 120px;
+  width: 100vw;
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 999;
+  justify-content: center;
+  font-size: 1.2rem;
+  position: sticky;
+}
+
+.navbar-container {
+  height: 120px;
+  width: 100vw;
+  background: var(--gradiant-transparent);
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 999;
+}
+
+.nav-container {
+  height: 120px;
+  width: 100vw;
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 999;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar-container-transparent {
+  height: 120px;
+  width: 100vw;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 99;
+}
+
+.main-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 50vw;
+  background: var(--gradiant);
+}
+
+.nav-logo {
+  align-items: center;
+  margin-left: 20px;
+  cursor: pointer;
+  text-decoration: none;
+  flex-grow: 1;
+  display: flex;
+}
+
+.nav-menu {
+  display: flex;
+  list-style: none;
+  text-align: center;
+  margin-right: 2rem;
+  margin-top: auto !important;
+  margin-bottom: auto !important;
+}
+
+.link {
+  color: var(--text-primary);
+  text-decoration: none;
+  position: relative;
+  transition: all ease-in-out 250ms;
+  font-family: "Airbnb Cereal App Light";
+}
+
+.link-moved {
+  color: white !important;
+  text-decoration: none;
+  position: relative;
+  transition: all ease-in-out 250ms;
+  font-family: "Airbnb Cereal App Light";
+}
+
+.link::after {
+  content: "";
+  position: absolute;
+  display: block;
+  height: 0.2rem;
+  width: 0%;
+  background: var(--gradiant);
+  bottom: -0.75rem;
+  transition: all ease-in-out 250ms;
+}
+
+.link:hover::after {
+  width: 100%;
+}
+
+.link:hover {
+  color: var(--bg-primary);
+  font-family: Airbnb Cereal App Medium;
+  width: fit-content;
+}
+
+.link-moved::after {
+  content: "";
+  position: absolute;
+  display: block;
+  height: 0.2rem;
+  width: 0%;
+  background: var(--gradiant);
+  bottom: -0.75rem;
+  transition: all ease-in-out 250ms;
+}
+
+.link-moved:hover::after {
+  width: 100%;
+}
+
+.link-moved:hover {
+  color: var(--bg-primary) !important;
+  font-family: Airbnb Cereal App Medium;
+  width: fit-content;
+}
+
+.fa-code {
+  margin-left: 1rem;
+}
+
+.navigation-item {
+  padding: 5px 20px;
+  color: var(--text-primary);
+  font-size: 1.2rem;
+  font-family: "Airbnb Cereal App Bold";
+}
+
+.navigation-item-moved {
+  padding: 5px 20px;
+  font-size: 1.2rem;
+  font-family: "Airbnb Cereal App Bold";
+}
+
+.nav-icon {
+  display: none;
+}
+
+.logo {
+  display: flex;
+  width: 300px;
+  margin: 0px 5vw;
+}
+
+.btn-register {
+  font-family:"Airbnb Cereal App Medium";
+  color: #fff;
+  background-image: var(--gradiant);
+  letter-spacing: 1px;
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 25px;
+  border: 0;
+  text-decoration: none;
+  transition: none;
+}
+
+.profileIcon{
+  width: 40px;
+}
+
+@media screen and (max-width: 1000px) {
+  .logo{
+    width: 200px !important;
+  }
+  .nav-menu {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-top: 1px solid #fff;
+    position: absolute;
+    top: 120px;
+    right: -110%;
+    opacity: 1;
+    transition: all 0.5s ease;
+  }
+
+  .nav-menu.active {
+    background: var(--gradiant);
+    right: 0px;
+    opacity: 1;
+    transition: all 0.5s ease;
+    z-index: 1;
+    width: 50vw;
+    height: 100vh;
+    margin-right: auto;
+    line-height: 5rem;
+  }
+  .navigation-item .active {
+    border: none;
+  }
+  .link {
+    color: white;
+    text-decoration: none;
+    position: relative;
+    transition: all ease-in-out 250ms;
+    font-family: "Airbnb Cereal App Light";
+  }
+
+  .nav-icon {
+    display: flex;
+    position: absolute;
+    right: 5%;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: #fff;
+  }
+  
+  .link-moved::after{
+    display: none;
+  }
+}
+
+
+@media screen and (max-width: 560px) {
+  .nav-menu.active {
+    background: var(--gradiant);
+    right: 0px;
+    opacity: 1;
+    transition: all 0.5s ease;
+    z-index: 1;
+    width: 100vw;
+    height: 100vh;
+    margin-right: auto;
+    line-height: 5rem;
+  }
+  .logo{
+    width:150px !important
+  }
+  .main-container {
+    width: 100vw !important;
+
+  }
+  
+}
+
+.nav-icon svg {
+  color: #fff !important;
+  width: 40px !important;
+  height: 40px !important;
+}
+#root{
+  width:100%;
+  overflow-x: hidden;
+}
+  

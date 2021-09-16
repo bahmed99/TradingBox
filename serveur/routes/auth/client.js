@@ -9,13 +9,12 @@ const bcrypt = require("bcrypt");
 
 var transporter = nodemailer.createTransport({
   service: "gmail",
-  host: 'smtp.gmail.com',
-    port: 465,
-    secure: true, 
+
+
   auth: {
-    user: "iDriveGears@gmail.com",
-    pass: "aok2020.",
-  },
+    user: "ahmed.bahri@ensi-uma.tn",
+    pass: "ahmed200",
+  }
 });
 
 router.post("/login", (req, res) => {
@@ -110,7 +109,7 @@ router.post("/forgot-password", (req, res) => {
         user.expireToken = Date.now() + 3600000;
         user.save().then((result) => {
           let mailoptions = {
-            from: "iDriveGears@gmail.com",
+            from: "ahmed.bahri@ensi-uma.tn",
             to: user.email,
             subject: "Reset mot de passe",
             html: `
@@ -122,6 +121,8 @@ router.post("/forgot-password", (req, res) => {
             if (error) {
               console.log(error);
             } else {
+
+              
               console.log("Email sent: " + info.response);
             }
           });
@@ -164,12 +165,13 @@ router.post("/new-password", (req, res) => {
 
 
 router.post("/check_mail",(req,res)=>{
+  console.log(req.body.email)
   Client.findOne({email:req.body.email}).then(savedUser=>{
     if (!savedUser) {
-      return res.send({ error: false });
+       res.send({ error: false });
     }
     else {
-      return res.send({ error: true });
+       res.send({ error: true });
     }
 
   })

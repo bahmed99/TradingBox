@@ -1,0 +1,191 @@
+
+.loginPage {
+  background-color: #fff;
+  width: 100%;
+  position: absolute;
+}
+
+.loginContainer {
+  display: contents;
+  position: absolute;
+}
+
+.login-header {
+  padding: 30px 50px 0px 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.loginLogo {
+  width: 270px;
+  float: left;
+}
+
+.signUpLink {
+  float: right;
+  font-size: 1.5rem;
+  font-family: "Airbnb Cereal App";
+  color: var(--text-secondary);
+}
+.login {
+  color: #333;
+}
+.login .login-heading {
+  font-size: 3rem;
+  font-family: "Airbnb Cereal App ";
+  color: #a1a1a7;
+  line-height: 1.5;
+  margin: 10px 0;
+  text-align: center;
+  font-weight: bold;
+}
+.login .login-text {
+  text-align: center;
+  margin-bottom: 30px;
+  font-family: "Airbnb Cereal App";
+  color: #a1a1a7;
+  font-size: 1.25rem;
+}
+
+.login .login-form {
+  margin: 60px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 30px 30px 30px;
+  max-width: 550px;
+  border-radius: 20px;
+  background-image: url("../images/signInBg.png");
+  background-size: cover;
+  border: 1px solid var(--text-secondary);
+}
+
+.login .login-form .field-container {
+  position: relative;
+  display: block;
+  margin: 10px 0;
+  height: 54px;
+  width: 90%;
+  border-radius: 3px;
+}
+
+.login .login-form .field-container.-focused input {
+  line-height: 62px;
+}
+
+.login .login-form input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2;
+  display: block;
+  background: rgba(11, 180, 220, 0.08);
+  line-height: 54px;
+  padding: 0 10px;
+  font-size: 16px;
+  border: none;
+  color: var(--text-primary);
+  border-radius: 3px;
+  border: 1px solid transparent;
+  transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.login .login-form input:focus,
+.login .login-form input:active {
+  outline: none;
+  border-color: var(--bg-secondary);
+}
+
+.login .login-form input::placeholder {
+  font-size: 1.25rem;
+  font-family: "Airbnb Cereal App";
+  z-index: 55;
+  color: var(--text-secondary);
+}
+
+.here {
+  color: var(--bg-primary);
+}
+
+.loginBtn {
+  font-size: 1rem;
+}
+
+.forgotPassword {
+  color: var(--text-secondary);
+  font-family: "Airbnb Cereal App";
+}
+
+.formLabel {
+  width: 100%;
+  font-family: "Airbnb Cereal App";
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+}
+
+.stepsList {
+  font-family: "Airbnb Cereal App";
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.step2Description {
+  font-size: 0.75rem;
+  color: var(--bg-primary);
+  font-family: "Airbnb Cereal App";
+  background: rgba(11, 180, 220, 0.08);
+  width: 70%;
+  padding-left: 3%;
+  padding-right: 3%;
+  padding-top: 2%;
+  display: flex;
+  align-items: flex-start;
+}
+
+.step2Description p {
+  margin-left: 3%;
+}
+
+.strategyDescription {
+  display: flex;
+  flex-direction: column;
+}
+
+.strategy {
+  display: flex;
+}
+
+.strategyDescription p {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-left: 3%;
+}
+
+.makeStyles-root-1 {
+  width: auto !important;
+}
+
+.MuiStepIcon-root.MuiStepIcon-completed {
+  color: var(--bg-primary) !important;
+}
+
+.MuiSvgIcon-root {
+  color: var(--text-secondary) !important;
+}
+
+@media screen and (max-width: 750px) {
+  .login-header {
+    flex-direction: column;
+    line-height: 4;
+  }
+  .loginLogo {
+    width: 200px;
+  }
+  .signUpLink {
+    font-size: 1rem;
+  }
+}
