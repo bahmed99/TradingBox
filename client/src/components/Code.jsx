@@ -59,6 +59,8 @@ export default function SignIn() {
                 setMsg(true)
                 setTimeout(() => setMsg(false), 1500);
                 setLoading(false)
+                setTimeout(() => history.push("/login"), 2000);
+               
 
             }).catch(err => {
                 setError(true)
@@ -69,21 +71,20 @@ export default function SignIn() {
     }
 
     function ReSend() {
-        setLoading(true)
-        axios.post("http://localhost:3001/auth/client/new-password", {
-            password: password,
-            token: code
-        }).then(res => {
-            setMsg(true)
-            setTimeout(() => setMsg(false), 1500);
-            setLoading(false)
+      
+            axios.post("http://localhost:3001/auth/client/forgot-password", {
+                email: localStorage.getItem("email"),
+                
+            }).then(res => {
+                
+                localStorage.removeItem("email")
+    
+            }).catch(err => {
+                
+    
+            })
 
-        }).catch(err => {
-            setError(true)
-            setTimeout(() => setError(false), 1500);
-            setLoading(false)
-
-        })
+       
 
     }
     return (
@@ -93,7 +94,7 @@ export default function SignIn() {
                 <p className="signUpLink">Don't have an account? <Link to="/signup" className="here">Sign Up</Link> </p>
             </div>
             <div className="login">
-                <form className="login-form">
+                <div className="login-form">
                     <Alert
 
                         show={msg}
@@ -112,7 +113,7 @@ export default function SignIn() {
                     </Alert>
                     <h1 className="login-heading">Reset code sent
                     </h1>
-                    <p className="login-text">Did not recieve the reset mail ? click <Link onClick={ReSend} className="here">here</Link> to resend</p>
+                    <p className="login-text">Did not recieve the reset mail ? click <button onClick={ReSend} style={{backgroundColor:"transparent",border:"transparent"}}className="here">here</button> to resend</p>
                     <div className="field-container -username">
                         <OverlayTrigger
                             delay={{ show: 250, hide: 400 }}
@@ -154,7 +155,7 @@ export default function SignIn() {
                     ) : (
                         "Confirm"
                     )}</div>
-                </form>
+                </div>
             </div>
         </div>
     )

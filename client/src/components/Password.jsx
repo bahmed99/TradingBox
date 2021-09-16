@@ -39,6 +39,7 @@ export default function Password() {
                 email: email
             }).then(res => {
                 setLoading(false)
+                localStorage.setItem("email",email)
                 history.push("/codeValidation")
 
 

@@ -8,6 +8,7 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import Alert from "react-bootstrap/Alert";
 import ReactLoading from "react-loading";
 export default function SignIn() {
+    const history = useHistory()
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [passwordTest, setPasswordTest] = useState(false)
@@ -50,7 +51,9 @@ export default function SignIn() {
                 password: password
             }).then(res => {
                 setLoading(false)
-                localStorage.setItem("jwt", res.data.token)
+                history.push("/home")
+                // localStorage.setItem("jwt", res.data.token)
+
 
             }).catch(err => {
                 setError(true)

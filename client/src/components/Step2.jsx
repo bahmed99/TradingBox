@@ -9,6 +9,7 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 export default function SignIn(props) {
     const [portfolio, setPortfolio] = useState(false)
     const [strategy, setStrategy] = useState(false)
+    const [size, setSize] = useState(false)
 
     function Next() {
         if(!props.strategy_suggestion){
@@ -19,7 +20,14 @@ export default function SignIn(props) {
             setPortfolio(true)
             setTimeout(() => setPortfolio(false), 1500);
         }
-        if(props.strategy_suggestion!=="" && props.portfolio_size!=="" ){
+        if(props.portfolio_size<1000 || typeof(props.portfolio_size)!=="number"){
+            setSize(true)
+            setTimeout(() => setSize(false), 3000);
+            setPortfolio(true)
+            setTimeout(() => setPortfolio(false), 1000);
+
+        }
+        if(props.strategy_suggestion!=="" && props.portfolio_size!=="" &&props.portfolio_size>=1000 ){
             props.next()
         }
 
@@ -47,7 +55,7 @@ export default function SignIn(props) {
                     <div className="field-container -username">
                         <OverlayTrigger
                             delay={{ show: 250, hide: 400 }}
-                            overlay={renderTooltipMissing}
+                            overlay={size===false?renderTooltipMissing:renderTooltipNumber}
                             show={portfolio}
                             placement="top"
                         >
@@ -94,3 +102,11 @@ const renderTooltipMissing = (props) => (
         Please add all the field
     </Tooltip>
 );
+
+
+const renderTooltipNumber = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+        {'Field must be a number>=1000$'}
+    </Tooltip>
+);
+

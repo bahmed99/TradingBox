@@ -49,8 +49,8 @@ export default function Step1(props) {
             setPasswordConfirmTest(true)
             setPasswordConfirmTestD(true)
 
-            setTimeout(() => setPasswordConfirmTest(false), 2000);
-            setTimeout(() => setPasswordConfirmTestD(false), 1500);
+            setTimeout(() => setPasswordConfirmTest(false), 3000);
+            setTimeout(() => setPasswordConfirmTestD(false), 1100);
 
         }
         else {
@@ -72,7 +72,7 @@ export default function Step1(props) {
 
 
 
-        if (test==="b"&& props.password === props.passwordConfirm) {
+        if ((/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(props.email))&& props.password === props.passwordConfirm) {
             axios.post("http://localhost:3001/auth/client/check_mail", { email: props.email }).then(res => {
                 setTest("a")
                 if (res.data.error === true) {
