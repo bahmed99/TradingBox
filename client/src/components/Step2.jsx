@@ -12,28 +12,33 @@ export default function SignIn(props) {
     const [size, setSize] = useState(false)
 
     function Next() {
-        if(!props.strategy_suggestion){
-            setStrategy(true)
-            setTimeout(() => setStrategy(false), 1500);
-        }
-        if(!props.portfolio_size){
+
+        if (!props.portfolio_size) {
             setPortfolio(true)
             setTimeout(() => setPortfolio(false), 1500);
         }
-        if(props.portfolio_size<1000 || typeof(props.portfolio_size)!=="number"){
+        if (props.portfolio_size < 1000 || typeof (props.portfolio_size) !== "number") {
             setSize(true)
             setTimeout(() => setSize(false), 3000);
             setPortfolio(true)
             setTimeout(() => setPortfolio(false), 1000);
 
         }
-        if(props.strategy_suggestion!=="" && props.portfolio_size!=="" &&props.portfolio_size>=1000 ){
+        if (props.portfolio_size !== "" && props.portfolio_size >= 1000) {
             props.next()
         }
 
-        
+
     }
 
+    function HandleChange(e) {
+        props.setPortfolio_size(e.target.value)
+        if(e.target.value>100000)
+        props.setStrategy_suggestion("option2")
+        else props.setStrategy_suggestion("option1")
+    
+    
+    }
     return (
         <div className="loginContainer">
             <div className="login">
@@ -55,24 +60,37 @@ export default function SignIn(props) {
                     <div className="field-container -username">
                         <OverlayTrigger
                             delay={{ show: 250, hide: 400 }}
-                            overlay={size===false?renderTooltipMissing:renderTooltipNumber}
+                            overlay={size === false ? renderTooltipMissing : renderTooltipNumber}
                             show={portfolio}
                             placement="top"
                         >
-                            <input type="email" placeholder="$ 10000" onChange={(e) => props.setPortfolio_size(e.target.value)} />
+                            <input type="email" placeholder="$ 10000"  onChange={(e) => HandleChange(e)} />
                         </OverlayTrigger>
                     </div>
                     <label className="formLabel">Strategy suggestion</label>
                     <div className="field-container -username">
-                        <OverlayTrigger
-                            delay={{ show: 250, hide: 400 }}
-                            overlay={renderTooltipMissing}
-                            show={strategy}
-                            placement="top"
-                        >
-                            <input type="email" placeholder="ExpoRL*" onChange={(e) => props.setStrategy_suggestion(e.target.value)} />
 
-                        </OverlayTrigger>
+                        {props.portfolio_size < 100000 ? <select onChange={(e) => props.setStrategy_suggestion(e.target.value)} >
+                            <option value="option1" >
+                                option1
+
+                            </option>
+                            <option value="option2" >
+                                option2
+
+                            </option>
+                        </select> : <select onChange={(e) => props.setStrategy_suggestion(e.target.value)} >
+                            <option value="option2" >
+                                option2
+
+                            </option>
+                            <option value="option1" >
+                                option1
+
+                            </option>
+                        </select>}
+
+
                     </div>
                     <div className="strategyDescription">
                         <div className="strategy">

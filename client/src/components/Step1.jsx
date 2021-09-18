@@ -72,20 +72,20 @@ export default function Step1(props) {
 
 
 
-        if ((/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(props.email))&& props.password === props.passwordConfirm) {
+        if ((/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(props.email)) && props.password === props.passwordConfirm) {
             axios.post("http://localhost:3001/auth/client/check_mail", { email: props.email }).then(res => {
                 setTest("a")
                 if (res.data.error === true) {
                     setConfirmTest(true)
-                    
+
                     setEmailTestD(true)
                     setTimeout(() => setEmailTestD(false), 1500);
-            
+
                     setTimeout(() => setConfirmTest(false), 2000);
 
                 }
                 else {
-                     
+
                     props.next()
                 }
             })

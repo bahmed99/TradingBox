@@ -39,7 +39,7 @@ export default function Registration() {
     const [api, setApi] = useState("");
     const [secret, setSecret] = useState("");
     const [portfolio_size, setPortfolio_size] = useState("");
-    const [strategy_suggestion, setStrategy_suggestion] = useState("");
+    const [strategy_suggestion, setStrategy_suggestion] = useState("option1");
 
     const history = useHistory()
     const steps = getSteps();
